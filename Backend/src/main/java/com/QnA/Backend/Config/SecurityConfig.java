@@ -24,7 +24,8 @@ public class SecurityConfig {
     AuthenticationSuccessHandler oauth2SuccessHandler(
             @Value("${app.frontend-url}") String frontendUrl) {
         SimpleUrlAuthenticationSuccessHandler handler = new SimpleUrlAuthenticationSuccessHandler();
-        handler.setDefaultTargetUrl(frontendUrl + "/auth/callback");
+//        handler.setDefaultTargetUrl(frontendUrl + "/auth/callback");
+        handler.setDefaultTargetUrl("http://localhost:8080/api/auth/login-success");
         return handler;
     }
     @Bean
@@ -41,7 +42,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf->csrf.disable())
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-                .authorizeHttpRequests(auth->auth.requestMatchers("/api/auth/login/url",
+                .authorizeHttpRequests(auth->auth.requestMatchers("/api/auth/login-url",
                         "/oauth2/**","/login/oauth2/**","/error")
                         .permitAll()
                         .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()

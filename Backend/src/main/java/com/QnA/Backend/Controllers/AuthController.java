@@ -19,7 +19,10 @@ public class AuthController {
     public Map<String, String> loginUrl() {
         return Map.of("url", "/oauth2/authorization/github");
     }
-
+    @GetMapping("/login-success")
+    public ResponseEntity<String> loginSuccess() {
+        return ResponseEntity.ok("GitHub Login Successful!");
+    }
     @GetMapping("/me")
     public ResponseEntity<UserResponse> me() {
         AppUserPrincipal principal = currentUser.require();

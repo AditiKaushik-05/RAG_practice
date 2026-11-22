@@ -1,5 +1,5 @@
 "use client";
-// import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useRouter } from "next/navigation";
 
@@ -19,36 +19,36 @@ export function setAuthCookie(authed: boolean) {
 }
 
 
-// export function useCurrentUser(){
-//     return useQuery({
-//         queryKey: queryKeys.auth.me(),
-//         queryFn: async()=>{
-//             try {
-//                 const user = await api.me();
-//                 setAuthCookie(true);
-//                 return user;
-//             } catch (error) {
-//                 setAuthCookie(false);
-//                 throw error;
-//             }
+export function useCurrentUser(){
+    return useQuery({
+        queryKey: queryKeys.auth.me(),
+        queryFn: async()=>{
+            try {
+                const user = await api.me();
+                setAuthCookie(true);
+                return user;
+            } catch (error) {
+                setAuthCookie(false);
+                throw error;
+            }
 
-//         },
-//          staleTime: 5 * 60 * 1000,
-//     retry: false,
-//     })
-// }
+        },
+         staleTime: 5 * 60 * 1000,
+    retry: false,
+    })
+}
 
-// export function useLogout() {
-//   const queryClient = useQueryClient();
-//   const router = useRouter();
+export function useLogout() {
+  const queryClient = useQueryClient();
+  const router = useRouter();
 
-//   return useMutation({
-//     mutationFn: () => api.logout(),
-//     onSettled: async () => {
-//       setAuthCookie(false);
-//       queryClient.setQueryData(queryKeys.auth.me(), null);
-//       await queryClient.invalidateQueries({ queryKey: queryKeys.auth.all });
-//       router.replace("/login");
-//     },
-//   });
-// }
+  return useMutation({
+    mutationFn: () => api.logout(),
+    onSettled: async () => {
+      setAuthCookie(false);
+      queryClient.setQueryData(queryKeys.auth.me(), null);
+      await queryClient.invalidateQueries({ queryKey: queryKeys.auth.all });
+      router.replace("/login");
+    },
+  });
+}
